@@ -1,0 +1,100 @@
+<section class="song-edit-content bg-custom-gradient animated fadeIn">
+    <div class="container custom_container">
+        <div class="alert alert-danger" role="alert" *ngIf="!song">
+            <strong>Error.</strong> Couldn't find the song
+        </div>
+        <form novalidate #form="ngForm" (ngSubmit)="onSubmit()" *ngIf="song">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h1>Edit {{song.name}} <small>Song</small></h1>
+                    <hr />
+                    <div class="alert alert-danger"
+                        role="alert"
+                        *ngIf="errorMessage">
+                        <strong>Oops.</strong> {{errorMessage}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row"
+                [ngClass]="{'has-danger': name.invalid && name.touched}">
+                <div class="col-lg-8 offset-lg-2">
+                    <input class="form-control"
+                        id="name"
+                        type="text"
+                        name="name"
+                        placeholder="Name"
+                        required
+                        [(ngModel)]="song.name"
+                        #name="ngModel"
+                        [ngClass]="{'form-control-danger': name.invalid && name.touched}" />
+                    <div class="form-control-feedback"
+                        *ngIf="name.errors?.required && name.touched">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row"
+                [ngClass]="{'has-danger': duration.invalid && duration.touched}">
+                <div class="col-lg-8 offset-lg-2">
+                    <input class="form-control"
+                        id="duration"
+                        type="text"
+                        name="duration"
+                        placeholder="Duration"
+                        required
+                        [(ngModel)]="song.duration"
+                        #duration="ngModel"
+                        [ngClass]="{'form-control-danger': duration.invalid && duration.touched}" />
+                    <div class="form-control-feedback"
+                        *ngIf="duration.errors?.required && duration.touched">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row"
+                [ngClass]="{'has-danger': number.invalid && number.touched}">
+                <div class="col-lg-8 offset-lg-2">
+                    <input class="form-control"
+                        id="number"
+                        type="number"
+                        name="number"
+                        placeholder="Number"
+                        required
+                        [(ngModel)]="song.number"
+                        #number="ngModel"
+                        [ngClass]="{'form-control-danger': number.invalid && number.touched}" />
+                    <div class="form-control-feedback"
+                        *ngIf="number.errors?.required && number.touched">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-8 offset-lg-2 text-center mb-1">
+                    <audio controls>
+                        <source [src]="songService.getSong(song)" type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                <div class="col-lg-8 offset-lg-2">
+                    <input class="form-control"
+                        id="image"
+                        type="file"
+                        name="image"
+                        (change)="inputFileChange($event)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-8 offset-lg-2 text-right">
+                    <button class="btn btn-primary"
+                        type="submit"
+                        [disabled]="form.invalid"
+                        [ngClass]="{'cursor-pointer': !form.invalid}">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!---->
+    </div>
+</section>

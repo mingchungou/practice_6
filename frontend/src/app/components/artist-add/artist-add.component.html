@@ -1,0 +1,63 @@
+<section class="artist-add-content bg-custom-gradient animated fadeIn">
+    <div class="container custom_container">
+        <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h1>Add Artist</h1>
+                    <hr />
+                    <div class="alert alert-danger"
+                        role="alert"
+                        *ngIf="errorMessage">
+                        <strong>Oops.</strong> {{errorMessage}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row"
+                [ngClass]="{'has-danger': name.invalid && name.touched}">
+                <div class="col-lg-8 offset-lg-2">
+                    <input class="form-control"
+                        id="name"
+                        type="text"
+                        name="name"
+                        placeholder="Name"
+                        required
+                        [(ngModel)]="artist.name"
+                        #name="ngModel"
+                        [ngClass]="{'form-control-danger': name.invalid && name.touched}" />
+                    <div class="form-control-feedback"
+                        *ngIf="name.errors?.required && name.touched">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row"
+                [ngClass]="{'has-danger': description.invalid && description.touched}">
+                <div class="col-lg-8 offset-lg-2">
+                    <textarea class="form-control"
+                        id="description"
+                        name="description"
+                        rows="3"
+                        placeholder="Description"
+                        required
+                        [(ngModel)]="artist.description"
+                        #description="ngModel"
+                        [ngClass]="{'form-control-danger': description.invalid && description.touched}"></textarea>
+                    <div class="form-control-feedback"
+                        *ngIf="description.errors?.required && description.touched">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-8 offset-lg-2 text-right">
+                    <button class="btn btn-primary"
+                        type="submit"
+                        [disabled]="form.invalid"
+                        [ngClass]="{'cursor-pointer': !form.invalid}">
+                        Insert
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

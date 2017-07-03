@@ -1,0 +1,61 @@
+//User - add
+{"name":"admin","username":"admin","email":"admin@gmail.com","password":"admin"}
+{"name":"Ming Chung Ou","username":"mingchung","email":"ming@qxdev.com","password":"12345"}
+
+//User - login
+{"email":"ming@qxdev.com","password":"12345","gethash":true}
+{"email":"admin@gmail.com","password":"admin","gethash":true}
+
+//User - token
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1OTQ4MWEwM2RjYTUyOTg2ZDBlYzMyZmIiLCJuYW1lIjoiYWRtaW4iLCJ1c2VybmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImltYWdlIjpudWxsLCJpYXQiOjE0OTc4OTg2MDcsImV4cCI6MTUwMDQ5MDYwN30.2FlZolz_adzhlCYtseZgtD1ZkR6MMMK9-5nABp-Q_9A
+
+//User - update
+{"name":"Ming Chung Ou","username":"ming1991"}
+
+
+//Artist - add
+{"name":"Enrique Iglesias","description":"Pop,Latin pop"}
+{"name":"Belinda Peregrín","description":"Pop Rock,Latin pop"}
+{"name":"Juan Magán","description":"House,Electronic"}
+{"name":"Ricky Martin","description":"Pop,Dance-pop"}
+{"name":"David Guetta","description":"House,Electro House"}
+{"name":"Dimitri Vegas","description":"Electro House,Progressive House"}
+{"name":"Afrojack","description":"Electro House,Progressive House"}
+{"name":"Tiësto","description":"Progressive House,Big Room House"}
+{"name":"Steve Aoki","description":"Electro House,Dupstep"}
+{"name":"Martin Garrix","description":"Dance,Progressive House"}
+{"name":"Alan Walker","description":"EDM,Trap"}
+
+//Artist - update
+{"name":"Enrique Iglesias","description":"Pop,Latin pop,Dance-pop"}
+
+
+//Album - add
+{"title":"Quizás","description":"Sixth album","year":2002,"artist":"59495fd7958e998b0df95499"}
+{"title":"Escape","description":"Fifth album","year":2001,"artist":"59495fd7958e998b0df95499"}
+{"title":"Cosas del amor","description":"Third album","year":1998,"artist":"59495fd7958e998b0df95499"}
+{"title":"Greatest Hits","description":"Compilation album","year":2008,"artist":"59495fd7958e998b0df95499"}
+{"title":"Sex and Love","description":"Tenth album","year":2014,"artist":"59495fd7958e998b0df95499"}
+
+{"title":"Vuelve","description":"Forth album","year":1998,"artist":"59484bbef1adaa8845a9b5b1"}
+{"title":"Life","description":"Third album","year":2005,"artist":"59484bbef1adaa8845a9b5b1"}
+
+//Album - update
+{"title":"Quizás x","description":"Sixth album","year":2002}
+{"title":"Vuelve x","description":"Forth album","year":1998}
+
+
+//Song - add
+{"number":1,"name":"Tres palabras","duration":"4:24","album":"59497882f4c1cd8c2a81e96a"}
+{"number":2,"name":"Para qué la vida","duration":"4:05","album":"59497882f4c1cd8c2a81e96a"}
+{"number":3,"name":"La chica de ayer","duration":"3:59","album":"59497882f4c1cd8c2a81e96a"}
+{"number":4,"name":"Mentiroso","duration":"3:55","album":"59497882f4c1cd8c2a81e96a"}
+{"number":5,"name":"Quizás","duration":"4:11","album":"59497882f4c1cd8c2a81e96a"}
+{"number":6,"name":"Pienso de ti","duration":"4:19","album":"59497882f4c1cd8c2a81e96a"}
+
+{"number":1,"name":"Vuelve","duration":"5:09","album":"594985a2ec376e8c39595547"}
+{"number":2,"name":"Perdido sin ti","duration":"4:11","album":"594985a2ec376e8c39595547"}
+
+//Song - update
+{"name":"Tres palabras x","duration":"4:24"}
+{"name":"Para qué la vida x","duration":"4:05"}

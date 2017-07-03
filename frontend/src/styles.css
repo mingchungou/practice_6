@@ -1,0 +1,265 @@
+/******* General header styles *******/
+.main-content .header-content .container .navbar {
+    padding: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.main-content .header-content .container .navbar .navbar-toggler:focus {
+    outline: 0;
+}
+
+.main-content .header-content .container .navbar .profile-data {
+    color: #ffffff
+}
+
+.main-content .header-content .container .navbar .profile-data .img-thumbnail {
+    padding: 0.05px;
+    border-radius: 50%;
+}
+
+/******* General styles *******/
+.main-content .cursor-pointer {
+    cursor: pointer;
+}
+
+.main-content .bg-custom-gradient {
+    min-height: 100vh;
+    background: #f0f9ff;
+    background: -moz-linear-gradient(to bottom, #f0f9ff 0%, #cbebff 82%, #a1dbff 100%);
+    background: -webkit-linear-gradient(bottom, #f0f9ff 0%, #cbebff 82%,#a1dbff 100%);
+    background: linear-gradient(to bottom, #f0f9ff 0%, #cbebff 82%, #a1dbff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f0f9ff", endColorstr="#a1dbff", GradientType=0);
+}
+
+.main-content h1 {
+    margin-bottom: 0;
+}
+
+.main-content hr {
+    margin: 0.5rem 0 2rem;
+}
+
+.main-content .alert {
+    margin-bottom: 2rem;
+}
+
+.main-content .custom_container {
+    padding-top: 5rem;
+    padding-bottom: 6rem;
+}
+
+.main-content .container.has-navigation {
+    padding-top: 3.8rem;
+}
+
+.main-content .container .navigation-content {
+    margin-bottom: 2rem;
+}
+
+.main-content .btn:focus {
+    box-shadow: none;
+}
+
+/******* General modal styles *******/
+.main-content .modal .modal-dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    max-width: 100%;
+    min-height: 100vh;
+}
+
+/******* General item list styles *******/
+.main-content .item-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.main-content .item-list li {
+    margin: 1rem;
+    padding: 0.3rem;
+    width: 200px;
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+.main-content .item-list li img {
+    width: 100%;
+    height: 150px;
+    border-radius: 3px 3px 0 0;
+    object-fit: cover;
+}
+
+.main-content .item-list li h6:focus,
+.main-content .item-list li h6:hover {
+    color: rgba(0, 0, 0, 0.6);
+    outline: 0;
+}
+
+.main-content .item-list li .buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-content .item-list li .buttons .btn {
+    flex: 1 1 50%;
+}
+
+/************ General animation ************/
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.fast {
+    animation-duration: 0.4s;
+    animation-fill-mode: both;
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/************ General player content styles ************/
+.main-content .player-content {
+    background-color: rgba(28, 28, 31, 0.9);
+}
+
+.main-content .player-content .container {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+}
+
+.main-content .player-content .container .song-info {
+    flex: 1 1 90%;
+}
+
+.main-content .player-content .container .song-info p {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.main-content .player-content .container .song-info p:last-of-type {
+    font-size: 0.7rem;
+}
+
+.main-content .player-content .container .audio-content {
+    flex: 1 1 10%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.main-content .player-content .container .audio-content audio {
+    display: none;
+}
+
+/******* Signin/Signup contents styles *******/
+.main-content .signin-content .container,
+.main-content .signup-content .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content .signin-content .custom_container,
+.main-content .signup-content .custom_container {
+    padding-bottom: 1rem;
+}
+
+.main-content .signin-content .container .navigation-content,
+.main-content .signup-content .container .navigation-content {
+    margin-top: auto;
+}
+
+.main-content .signin-content .container .navigation-content p,
+.main-content .signup-content .container .navigation-content p {
+    margin: 0;
+}
+
+/******* Home content styles *******/
+.main-content .home-content .jumbotron {
+    margin: 0;
+    padding: 2rem 1rem 6rem;
+    height: 100vh;
+    border-radius: 0;
+    background: url("assets/img/music-background.jpg") center bottom no-repeat fixed;
+    background-size: cover;
+    color: #ffffff;
+}
+
+.main-content .home-content .jumbotron .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+/******* Artists content styles *******/
+.main-content .artists-content .container .pagination {
+    justify-content: center;
+}
+
+/******* Album detail content styles *******/
+.main-content .album-detail-content .container .song-list li .play-btn {
+    background-color: ##bdbdbd;
+}
+
+.main-content .album-detail-content .container .song-list li .play-btn img {
+    width: 15px;
+    height: 17px;
+    border-radius: 0;
+}
+
+.main-content .album-detail-content .container .song-list li h6:hover {
+    color: inherit;
+}
+
+/******* Media queries *******/
+@media (max-width: 767px) {
+    /******* General header styles *******/
+    .main-content .header-content .container .navbar .navbar-nav {
+        margin: 0.5rem 0 1rem;
+    }
+
+    .main-content .header-content .container .navbar .navbar-nav .nav-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+    }
+
+    .main-content .header-content .container .navbar .btn-auth {
+        width: 100%;
+    }
+
+    /******* Artist detail content styles *******/
+    .main-content .artist-detail-content .container .col-md-8 h2 {
+        margin-top: 1rem;
+    }
+
+    /******* Album detail content styles *******/
+    .main-content .artist-detail-content .container .col-md-4 img,
+    .main-content .album-detail-content .container .col-md-4 img {
+        width: 300px;
+        height: 300px;
+    }
+}

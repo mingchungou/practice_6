@@ -1,0 +1,88 @@
+<section class="artist-detail-content bg-custom-gradient animated fadeIn">
+    <div class="container custom_container">
+        <div class="alert alert-danger" role="alert" *ngIf="!artist">
+            <strong>Error.</strong> Couldn't find the artist
+        </div>
+        <div class="row" *ngIf="artist">
+            <div class="col-md-4 text-center">
+                <img class="img-thumbnail"
+                    [src]="artistService.getImage(artist)"
+                    [alt]="artist.name" />
+                <h4 class="mt-2 font-weight-bold">{{artist.name}}</h4>
+                <hr class="mb-3"/>
+                <p>{{artist.description}}</p>
+            </div>
+            <div class="col-md-8">
+                <h2>Albums</h2>
+                <hr [ngClass]="{'mb-2': isAdmin, 'mb-3': !isAdmin  && !errorMessage}"/>
+                <div class="text-right" *ngIf="isAdmin">
+                    <button class="btn btn-primary mb-3 cursor-pointer"
+                        type="button"
+                        [routerLink]="['/album-add', artist.id]">
+                        Add
+                    </button>
+                </div>
+                <div class="alert alert-danger"
+                    role="alert"
+                    *ngIf="errorMessage"
+                    [ngClass]="{'my-3': isAdmin, 'mb-3': !isAdmin}">
+                    <strong>Oops.</strong> {{errorMessage}}
+                </div>
+                <div *ngIf="albums.length > 0">
+                    <ul class="album-list item-list">
+                        <li *ngFor="let album of albums">
+                            <img [src]="albumService.getImage(album)" [alt]="album.title" />
+                            <h6 class="text-center mt-2 font-weight-bold cursor-pointer"
+                                [routerLink]="['/album-detail', album.id]">
+                                {{album.title}} <small class="text-success">({{album.year}})</small>
+                            </h6>
+                            <div class="buttons" *ngIf="isAdmin">
+                                <button class="btn btn-info btn-sm cursor-pointer mr-1"
+                                    type="button"
+                                    [routerLink]="['/album-edit', album.id]">
+                                    Edit
+                                </button>
+                                <button class="btn btn-secondary btn-sm cursor-pointer ml-1"
+                                    type="button"
+                                    (click)="showConfirmAlert(album.id)">
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade"
+    id="myModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+            </div>
+            <div class="modal-body">Are you sure to remove this album?</div>
+            <div class="modal-footer">
+                <button type="button"
+                    class="btn btn-secondary cursor-pointer"
+                    data-dismiss="modal"
+                    (click)="albumIdDelete = undefined">
+                    Cancel
+                </button>
+                <button type="button"
+                    class="btn btn-primary cursor-pointer"
+                    (click)="deleteAlbum()">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<section class="player-content">
+    <div class="container py-3">
+        <img [src]="musicPlayerService.albumImagePath"
+            [alt]="musicPlayerService.album?.title"
+            width="50" />
+        <div class="song-info mx-3">
+            <p>{{musicPlayerService.song?.name}}</p>
+            <p>{{musicPlayerService.album?.title}} - {{musicPlayerService.artist?.name}}</p>
+        </div>
+        <div class="audio-content">
+            <img class="cursor-pointer" src="assets/img/glyphicons-play.svg"
+                alt="Glyphicons play"
+                (click)="musicPlayerService.changeStatus()"
+                *ngIf="!musicPlayerService.isPlaying" />
+            <img class="cursor-pointer" src="assets/img/glyphicons-pause.svg"
+                alt="Glyphicons pause"
+                (click)="musicPlayerService.changeStatus()"
+                *ngIf="musicPlayerService.isPlaying" />
+            <audio id="player" controls>
+                <source id="mp3-source" [src]="musicPlayerService.songPath" type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </div>
+</section>

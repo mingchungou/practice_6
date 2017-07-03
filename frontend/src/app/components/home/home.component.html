@@ -1,0 +1,25 @@
+<section class="home-content bg-custom-gradient animated fadeIn">
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-4 text-center">Welcome to MUSIFY</h1>
+            <p class="text-center lead">
+                Start to listen your favorite artist's musics and discover new hits.
+            </p>
+            <button class="btn btn-primary cursor-pointer"
+                type="button"
+                [routerLink]="['/artists', 1]"
+                *ngIf="isAuthenticated">
+                See artists
+            </button>
+            <button class="btn btn-primary cursor-pointer"
+                type="button"
+                [routerLink]="['/signup']"
+                *ngIf="!isAuthenticated">
+                Join Us
+            </button>
+        </div>
+    </div>
+    <div class="container">
+
+    </div>
+</section>

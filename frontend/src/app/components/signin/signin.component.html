@@ -1,0 +1,71 @@
+<section class="signin-content bg-custom-gradient animated fadeIn">
+    <div class="container custom_container">
+        <form novalidate #form="ngForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <h1>Sign In</h1>
+                    <hr />
+                    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+                        <strong>Oops.</strong> {{errorMessage}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row"
+                [ngClass]="{'has-danger': email.invalid && email.touched}">
+                <div class="col-lg-8 offset-lg-2">
+                    <input class="form-control"
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        required
+                        pattern="[^()\/\\\[\]@#$%&?¡!¿{}<>]+@[a-zA-Z0-9]+(?:\.[a-zA-Z]{2,3}){1,2}"
+                        [(ngModel)]="user.email"
+                        #email="ngModel"
+                        [ngClass]="{'form-control-danger': email.invalid && email.touched}" />
+                    <div class="form-control-feedback"
+                        *ngIf="email.errors?.required && email.touched">
+                        This field is required
+                    </div>
+                    <div class="form-control-feedback"
+                        *ngIf="email.errors?.pattern && email.touched">
+                        The email written is invalid
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row"
+                [ngClass]="{'has-danger': password.invalid && password.touched}">
+                <div class="col-lg-8 offset-lg-2">
+                    <input class="form-control"
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        required
+                        [(ngModel)]="user.password"
+                        #password="ngModel"
+                        [ngClass]="{'form-control-danger': password.invalid && password.touched}" />
+                    <div class="form-control-feedback"
+                        *ngIf="password.errors?.required && password.touched">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-8 offset-lg-2 text-right">
+                    <button class="btn btn-primary"
+                        type="submit"
+                        [disabled]="form.invalid"
+                        [ngClass]="{'cursor-pointer': !form.invalid}">
+                        Enter
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="navigation-content text-center">
+            <p>Don't have an account? <a class="navigate" [routerLink]="['/signup']">
+                Go to Sign up
+            </a></p>
+        </div>
+    </div>
+</section>

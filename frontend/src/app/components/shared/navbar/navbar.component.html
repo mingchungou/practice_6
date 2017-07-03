@@ -1,0 +1,49 @@
+<nav class="navbar navbar-toggleable-sm navbar-inverse">
+    <button class="navbar-toggler navbar-toggler-right cursor-pointer"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarText"
+        aria-controls="navbarText"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" [routerLink]="['/home']">MUSIFY</a>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/home']">Home</a>
+            </li>
+            <li class="nav-item"
+                routerLinkActive="active"
+                *ngIf="userService.isAuthenticated()">
+                <a class="nav-link" [routerLink]="['/artists', 1]">Artists</a>
+            </li>
+            <li class="nav-item"
+                routerLinkActive="active"
+                *ngIf="userService.isAuthenticated()">
+                <a class="nav-link" [routerLink]="['/user-edit']">My Data</a>
+            </li>
+        </ul>
+        <span class="mr-3 profile-data hidden-sm-down"
+            *ngIf="userService.isAuthenticated()">
+            <img class="img-thumbnail"
+                width="40"
+                alt="User profile image"
+                [src]="userService.getImage()" />
+            <label class="ml-1">{{userService.identity.username}}</label>
+        </span>
+        <button class="btn btn-outline-danger btn-auth cursor-pointer"
+            type="button"
+            (click)="logOut()"
+            *ngIf="userService.isAuthenticated()">
+            Log out
+        </button>
+        <button class="btn btn-outline-success btn-auth cursor-pointer"
+            type="button"
+            (click)="logIn()"
+            *ngIf="!userService.isAuthenticated()">
+            Log in
+        </button>
+    </div>
+</nav>
