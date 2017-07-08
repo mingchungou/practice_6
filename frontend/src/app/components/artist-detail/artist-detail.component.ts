@@ -1,6 +1,7 @@
 
-import {Component, OnInit, ElementRef} from "@angular/core";
+import {Component, OnInit, OnDestroy, ElementRef} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {UserService} from "../../services/user.service";
@@ -17,7 +18,10 @@ declare var $:any;
     selector: "app-artist-detail",
     templateUrl: "./artist-detail.component.html"
 })
-export class ArtistDetailComponent implements OnInit {
+export class ArtistDetailComponent implements OnInit, OnDestroy {
+    private artistGetSubs: Subscription;
+    private albumsGetSubs: Subscription;
+    private albumDeleteSubs: Subscription;
     private isAdmin: boolean;
     private artist: Artist;
     private albums: Array<Album>;
@@ -36,7 +40,7 @@ export class ArtistDetailComponent implements OnInit {
         this.isAdmin = this.userService.isAdmin();
 
         this.activatedRoute.params.forEach(params => {
-            this.artistService.getById(params.id).subscribe(res => {
+            this.artistGetSubs = this.artistService.getById(params.id).subscribe(res => {
                 this.artist = new Artist(
                     res.artist._id,
                     res.artist.name,
@@ -49,11 +53,20 @@ export class ArtistDetailComponent implements OnInit {
         });
     };
 
+    ngOnDestroy() {
+        this.artistGetSubs.unsubscribe();
+        this.albumsGetSubs.unsubscribe();
+
+        if (this.albumDeleteSubs) {
+            this.albumDeleteSubs.unsubscribe();
+        }
+    };
+
     //Function for loading all albums which belong to the artist.
     private loadAlbums(): void {
         this.albums = [];
 
-        this.albumService.getAlbums(this.artist.id).subscribe(res => {
+        this.albumsGetSubs = this.albumService.getAlbums(this.artist.id).subscribe(res => {
             for (let item of res.albums) {
                 let album: Album = new Album(
                     item._id,
@@ -87,7 +100,7 @@ export class ArtistDetailComponent implements OnInit {
         $(this.el.nativeElement.querySelector("#myModal")).modal("hide");
 
         if (this.albumIdDelete) {
-            this.albumService.delete(this.albumIdDelete).subscribe(res => {
+            this.albumDeleteSubs = this.albumService.delete(this.albumIdDelete).subscribe(res => {
                 this.loadAlbums();
             }, err => {
                 let data: any = JSON.parse(err._body);

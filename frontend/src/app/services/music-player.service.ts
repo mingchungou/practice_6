@@ -68,6 +68,10 @@ export class MusicPlayerService {
 
     //Function for starting/pausing the player.
     public changeStatus(): void {
+        if (!this.song) {
+            return;
+        }
+        
         if (this.isPlaying) {
             this.playerElem[0].pause();
             this.isPlaying = false;
@@ -79,7 +83,7 @@ export class MusicPlayerService {
 
     //Function for updating artist of player.
     public updateArtist(artist: Artist): void {
-        if (this.artist.id === artist.id) {
+        if (this.artist && this.artist.id === artist.id) {
             this.artist = artist;
 
             this.storeMusicData();
@@ -88,7 +92,7 @@ export class MusicPlayerService {
 
     //Function for updating album of player.
     public updateAlbum(album: Album): void {
-        if (this.album.id === album.id) {
+        if (this.album && this.album.id === album.id) {
             this.album = album;
             this.albumImagePath = this.albumService.getImage(this.album);
 
@@ -98,7 +102,7 @@ export class MusicPlayerService {
 
     //Function for updating song of player.
     public updateSong(song: Song): void {
-        if (this.song.id === song.id) {
+        if (this.song && this.song.id === song.id) {
             this.song = song;
             this.songPath = this.songService.getSong(this.song);
 
@@ -112,7 +116,7 @@ export class MusicPlayerService {
 
     //Function for removing current song stored if it is removed.
     public deleteSong(id: string): void {
-        if (this.song.id === id) {
+        if (this.song && this.song.id === id) {
             this.artist = null;
             this.album = null;
             this.song = null;

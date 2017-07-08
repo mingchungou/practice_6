@@ -1,6 +1,7 @@
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {ArtistService} from "../../services/artist.service";
@@ -15,7 +16,10 @@ import {Artist} from "../../models/artist.model";
     selector: "app-artist-edit",
     templateUrl: "./artist-edit.component.html",
 })
-export class ArtistEditComponent implements OnInit {
+export class ArtistEditComponent implements OnInit, OnDestroy {
+    private artistGetSubs: Subscription;
+    private artistUpdateSubs: Subscription;
+    private artistUploadSubs: Subscription;
     private artist: Artist;
     private errorMessage: string;
     private fileToUpload: File;
@@ -30,7 +34,7 @@ export class ArtistEditComponent implements OnInit {
 
     ngOnInit() {
         this.activatedRoute.params.forEach(params => {
-            this.artistService.getById(params.id).subscribe(res => {
+            this.artistGetSubs = this.artistService.getById(params.id).subscribe(res => {
                 this.artist = new Artist(
                     res.artist._id,
                     res.artist.name,
@@ -39,6 +43,18 @@ export class ArtistEditComponent implements OnInit {
                 );
             }, err => console.error(err));
         });
+    };
+
+    ngOnDestroy() {
+        this.artistGetSubs.unsubscribe();
+
+        if (this.artistUpdateSubs) {
+            this.artistUpdateSubs.unsubscribe();
+        }
+
+        if (this.artistUploadSubs) {
+            this.artistUploadSubs.unsubscribe();
+        }
     };
 
     //Function for setting image file loaded to local variable.
@@ -55,11 +71,11 @@ export class ArtistEditComponent implements OnInit {
     private onSubmit(): void {
         this.errorMessage = null;
 
-        this.artistService.update(this.artist).subscribe(res => {
+        this.artistUpdateSubs = this.artistService.update(this.artist).subscribe(res => {
             if (!this.fileToUpload) {
                 this.successUpdateArtist();
             } else {
-                this.uploadService.uploadImage(
+                this.artistUploadSubs = this.uploadService.uploadImage(
                     this.artist.id,
                     this.fileToUpload,
                     "artist"

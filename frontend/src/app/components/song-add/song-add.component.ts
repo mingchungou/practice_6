@@ -1,6 +1,7 @@
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {SongService} from "../../services/song.service";
@@ -12,7 +13,8 @@ import {Song} from "../../models/song.model";
     selector: "app-song-add",
     templateUrl: "./song-add.component.html"
 })
-export class SongAddComponent implements OnInit {
+export class SongAddComponent implements OnInit, OnDestroy {
+    private songInsertSubs: Subscription;
     private song: Song;
     private errorMessage: string;
 
@@ -30,10 +32,16 @@ export class SongAddComponent implements OnInit {
         });
     };
 
+    ngOnDestroy() {
+        if (this.songInsertSubs) {
+            this.songInsertSubs.unsubscribe();
+        }
+    };
+
     private onSubmit(): void {
         this.errorMessage = null;
 
-        this.songService.insert(this.song).subscribe(res => {
+        this.songInsertSubs = this.songService.insert(this.song).subscribe(res => {
             this.router.navigate(["/song-edit", res.song._id]);
         }, err => {
             let data: any = JSON.parse(err._body);

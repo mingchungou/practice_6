@@ -1,6 +1,7 @@
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {AlbumService} from "../../services/album.service";
@@ -12,7 +13,8 @@ import {Album} from "../../models/album.model";
     selector: "app-album-add",
     templateUrl: "./album-add.component.html"
 })
-export class AlbumAddComponent implements OnInit {
+export class AlbumAddComponent implements OnInit, OnDestroy {
+    private albumInsertSubs: Subscription;
     private album: Album;
     private errorMessage: string;
 
@@ -30,10 +32,16 @@ export class AlbumAddComponent implements OnInit {
         });
     };
 
+    ngOnDestroy() {
+        if (this.albumInsertSubs) {
+            this.albumInsertSubs.unsubscribe();
+        }
+    };
+
     private onSubmit(): void {
         this.errorMessage = null;
 
-        this.albumService.insert(this.album).subscribe(res => {
+        this.albumInsertSubs = this.albumService.insert(this.album).subscribe(res => {
             this.router.navigate(["/album-edit", res.album._id]);
         }, err => {
             let data: any = JSON.parse(err._body);

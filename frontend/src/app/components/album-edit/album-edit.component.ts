@@ -1,6 +1,7 @@
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {AlbumService} from "../../services/album.service";
@@ -14,7 +15,10 @@ import {Album} from "../../models/album.model";
     selector: "app-album-edit",
     templateUrl: "./album-edit.component.html"
 })
-export class AlbumEditComponent implements OnInit {
+export class AlbumEditComponent implements OnInit, OnDestroy {
+    private albumGetSubs: Subscription;
+    private albumUpdateSubs: Subscription;
+    private albumUploadSubs: Subscription;
     private album: Album;
     private errorMessage: string;
     private fileToUpload: File;
@@ -29,7 +33,7 @@ export class AlbumEditComponent implements OnInit {
 
     ngOnInit() {
         this.activatedRoute.params.forEach(params => {
-            this.albumService.getById(params.id).subscribe(res => {
+            this.albumGetSubs = this.albumService.getById(params.id).subscribe(res => {
                 this.album = new Album(
                     res.album._id,
                     res.album.title,
@@ -40,6 +44,18 @@ export class AlbumEditComponent implements OnInit {
                 );
             }, err => console.error(err));
         });
+    };
+
+    ngOnDestroy() {
+        this.albumGetSubs.unsubscribe();
+
+        if (this.albumUpdateSubs) {
+            this.albumUpdateSubs.unsubscribe();
+        }
+
+        if (this.albumUploadSubs) {
+            this.albumUploadSubs.unsubscribe();
+        }
     };
 
     //Function for setting image file loaded to local variable.
@@ -56,11 +72,11 @@ export class AlbumEditComponent implements OnInit {
     private onSubmit(): void {
         this.errorMessage = null;
 
-        this.albumService.update(this.album).subscribe(res => {
+        this.albumUpdateSubs = this.albumService.update(this.album).subscribe(res => {
             if (!this.fileToUpload) {
                 this.successUpdateAlbum();
             } else {
-                this.uploadService.uploadImage(
+                this.albumUploadSubs = this.uploadService.uploadImage(
                     this.album.id,
                     this.fileToUpload,
                     "album"

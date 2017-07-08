@@ -1,6 +1,7 @@
 
-import {Component, OnInit, ElementRef} from "@angular/core";
+import {Component, OnInit, OnDestroy, ElementRef} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {UserService} from "../../services/user.service";
@@ -15,7 +16,9 @@ declare var $:any;
     selector: "app-artists",
     templateUrl: "./artists.component.html"
 })
-export class ArtistsComponent implements OnInit {
+export class ArtistsComponent implements OnInit, OnDestroy {
+    private artistsGetSubs: Subscription;
+    private artistDeleteSubs: Subscription;
     private isAdmin: boolean = false;
     private artists: Array<Artist> = [];
     private prevButton: boolean = false;
@@ -43,11 +46,19 @@ export class ArtistsComponent implements OnInit {
         });
     };
 
+    ngOnDestroy() {
+        this.artistsGetSubs.unsubscribe();
+
+        if (this.artistDeleteSubs) {
+            this.artistDeleteSubs.unsubscribe();
+        }
+    };
+
     //Function for loading artist list based on page number.
     private loadArtists(): void {
         this.artists = [];
 
-        this.artistService.getByPage(this.page).subscribe(res => {
+        this.artistsGetSubs = this.artistService.getByPage(this.page).subscribe(res => {
             this.prevButton = ((this.page - 1) >= 1) ? true : false;
             this.nextButton = ((this.page + 1) <= res.pages) ? true : false;
 
@@ -88,7 +99,7 @@ export class ArtistsComponent implements OnInit {
         $(this.el.nativeElement.querySelector("#myModal")).modal("hide");
 
         if (this.artistIdDelete) {
-            this.artistService.delete(this.artistIdDelete).subscribe(res => {
+            this.artistDeleteSubs = this.artistService.delete(this.artistIdDelete).subscribe(res => {
                 this.loadArtists();
             }, err => {
                 let data: any = JSON.parse(err._body);

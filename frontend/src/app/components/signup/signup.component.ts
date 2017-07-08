@@ -1,6 +1,7 @@
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Router} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {UserService} from "../../services/user.service";
@@ -12,7 +13,9 @@ import {User} from "../../models/user.model";
     selector: "app-signup",
     templateUrl: "./signup.component.html"
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
+    private userInsertSubs: Subscription;
+    private userTokenSubs: Subscription;
     private user: User;
     private errorMessage: string;
 
@@ -25,9 +28,19 @@ export class SignupComponent implements OnInit {
         this.user = new User("", "", "", "", "", "ROLE_USER", "");
     };
 
+    ngOnDestroy() {
+        if (this.userInsertSubs) {
+            this.userInsertSubs.unsubscribe();
+        }
+
+        if (this.userTokenSubs) {
+            this.userTokenSubs.unsubscribe();
+        }
+    };
+
     //Function for requesting user token.
     private getToken(): void {
-        this.userService.signin(this.user, true).subscribe(res => {
+        this.userTokenSubs = this.userService.signin(this.user, true).subscribe(res => {
             this.userService.token = res.token;
             this.userService.storeToken();
 
@@ -43,7 +56,7 @@ export class SignupComponent implements OnInit {
     private onSubmit(): void {
         this.errorMessage = null;
 
-        this.userService.insert(this.user).subscribe(res => {
+        this.userInsertSubs = this.userService.insert(this.user).subscribe(res => {
             this.userService.identity = new User(res.user._id,
                 res.user.name,
                 res.user.username,

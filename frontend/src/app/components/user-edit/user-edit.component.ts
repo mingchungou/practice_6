@@ -1,5 +1,6 @@
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {UserService} from "../../services/user.service";
@@ -12,7 +13,9 @@ import {User} from "../../models/user.model";
     selector: "app-user-edit",
     templateUrl: "./user-edit.component.html"
 })
-export class UserEditComponent implements OnInit {
+export class UserEditComponent implements OnInit, OnDestroy {
+    private userUpdateSubs: Subscription;
+    private userUploadSubs: Subscription;
     private user: User;
     private errorMessage: string;
     private successMessage: string;
@@ -35,6 +38,16 @@ export class UserEditComponent implements OnInit {
         );
     };
 
+    ngOnDestroy() {
+        if (this.userUpdateSubs) {
+            this.userUpdateSubs.unsubscribe();
+        }
+
+        if (this.userUploadSubs) {
+            this.userUploadSubs.unsubscribe();
+        }
+    };
+
     //Function for setting image file loaded to local variable.
     private inputFileChange(ev: any): void {
         this.fileToUpload = ev.target.files[0];
@@ -55,11 +68,11 @@ export class UserEditComponent implements OnInit {
         this.errorMessage = null;
         this.successMessage = null;
 
-        this.userService.update(this.user).subscribe(res => {
+        this.userUpdateSubs = this.userService.update(this.user).subscribe(res => {
             if (!this.fileToUpload) {
                 this.successUpdateUser();
             } else {
-                this.uploadService.uploadImage(
+                this.userUploadSubs = this.uploadService.uploadImage(
                     this.user.id,
                     this.fileToUpload,
                     "user"

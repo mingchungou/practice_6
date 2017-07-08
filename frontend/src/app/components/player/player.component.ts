@@ -28,5 +28,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
         if (this.musicPlayerService.isPlaying) {
             this.musicPlayerService.isPlaying = false;
         }
+
+        this.musicPlayerService.playerElem.off("ended");
     };
 };

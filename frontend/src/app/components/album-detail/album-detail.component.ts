@@ -1,6 +1,7 @@
 
-import {Component, OnInit, ElementRef} from "@angular/core";
+import {Component, OnInit, OnDestroy, ElementRef} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {UserService} from "../../services/user.service";
@@ -19,7 +20,10 @@ declare var $:any;
     selector: "app-album-detail",
     templateUrl: "./album-detail.component.html"
 })
-export class AlbumDetailComponent implements OnInit {
+export class AlbumDetailComponent implements OnInit, OnDestroy {
+    private albumGetSubs: Subscription;
+    private songsGetSubs: Subscription;
+    private songDeleteSubs: Subscription;
     private isAdmin: boolean;
     private artist: Artist;
     private album: Album;
@@ -40,7 +44,7 @@ export class AlbumDetailComponent implements OnInit {
         this.isAdmin = this.userService.isAdmin();
 
         this.activatedRoute.params.forEach(params => {
-            this.albumService.getById(params.id).subscribe(res => {
+            this.albumGetSubs = this.albumService.getById(params.id).subscribe(res => {
                 this.artist = new Artist(
                     res.album.artist._id,
                     res.album.artist.name,
@@ -62,11 +66,20 @@ export class AlbumDetailComponent implements OnInit {
         });
     };
 
+    ngOnDestroy() {
+        this.albumGetSubs.unsubscribe();
+        this.songsGetSubs.unsubscribe();
+
+        if (this.songDeleteSubs) {
+            this.songDeleteSubs.unsubscribe();
+        }
+    };
+
     //Function for loading all songs which belong to the album.
     private loadSongs(): void {
         this.songs = [];
 
-        this.songService.getSongs(this.album.id).subscribe(res => {
+        this.songsGetSubs = this.songService.getSongs(this.album.id).subscribe(res => {
             for (let item of res.songs) {
                 let song: Song = new Song(
                     item._id,
@@ -100,7 +113,7 @@ export class AlbumDetailComponent implements OnInit {
         $(this.el.nativeElement.querySelector("#myModal")).modal("hide");
 
         if (this.songIdDelete) {
-            this.songService.delete(this.songIdDelete).subscribe(res => {
+            this.songDeleteSubs = this.songService.delete(this.songIdDelete).subscribe(res => {
                 this.loadSongs();
                 this.musicPlayerService.deleteSong(this.songIdDelete);
             }, err => {

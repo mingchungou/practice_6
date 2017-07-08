@@ -1,6 +1,7 @@
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs/Rx";
 
 //Loading services
 import {SongService} from "../../services/song.service";
@@ -14,7 +15,10 @@ import {Song} from "../../models/song.model";
     selector: "app-song-edit",
     templateUrl: "./song-edit.component.html"
 })
-export class SongEditComponent implements OnInit {
+export class SongEditComponent implements OnInit, OnDestroy {
+    private songGetSubs: Subscription;
+    private songUpdateSubs: Subscription;
+    private songUploadSubs: Subscription;
     private song: Song;
     private errorMessage: string;
     private fileToUpload: File;
@@ -29,7 +33,7 @@ export class SongEditComponent implements OnInit {
 
     ngOnInit() {
         this.activatedRoute.params.forEach(params => {
-            this.songService.getById(params.id).subscribe(res => {
+            this.songGetSubs = this.songService.getById(params.id).subscribe(res => {
                 this.song = new Song(
                     res.song._id,
                     res.song.number,
@@ -40,6 +44,18 @@ export class SongEditComponent implements OnInit {
                 );
             }, err => console.error(err));
         });
+    };
+
+    ngOnDestroy() {
+        this.songGetSubs.unsubscribe();
+
+        if (this.songUpdateSubs) {
+            this.songUpdateSubs.unsubscribe();
+        }
+
+        if (this.songUploadSubs) {
+            this.songUploadSubs.unsubscribe();
+        }
     };
 
     //Function for setting song file loaded to local variable.
@@ -56,11 +72,11 @@ export class SongEditComponent implements OnInit {
     private onSubmit(): void {
         this.errorMessage = null;
 
-        this.songService.update(this.song).subscribe(res => {
+        this.songUpdateSubs = this.songService.update(this.song).subscribe(res => {
             if (!this.fileToUpload) {
                 this.successUpdateSong();
             } else {
-                this.uploadService.uploadSong(
+                this.songUploadSubs = this.uploadService.uploadSong(
                     this.song.id,
                     this.fileToUpload,
                     "song"
